@@ -19,7 +19,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(user -> new UserDto(user.getId(), user.getUsername(), user.getLastName(), user.getEmail()))
+                .map(user -> new UserDto(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getPassword()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -36,10 +42,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDto.getUsername());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
-
-        if (user.getPassword() == null) {
-            user.setPassword("defaultPassword");
-        }
+        user.setPassword(userDto.getPassword());
 
         userRepository.save(user);
     }
@@ -55,7 +58,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         return userRepository.findById(id)
-                .map(user -> new UserDto(user.getId(), user.getUsername(), user.getLastName(), user.getEmail()))
+                .map(user -> new UserDto(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getPassword()
+                ))
                 .orElse(null);
     }
 }

@@ -22,7 +22,6 @@ public class UserController {
 
     @GetMapping
     public String listUsers(Model model) {
-        System.out.println(">> listUsers handler invoked");
         model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
@@ -30,11 +29,12 @@ public class UserController {
     @PostMapping("/save")
     public String saveUser(@RequestParam String username,
                            @RequestParam String lastName,
-                           @RequestParam String email) {
-        if (username.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
+                           @RequestParam String email,
+                           @RequestParam String password) {
+        if (username.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             return "redirect:/users?error=emptyFields";
         }
-        userService.saveUser(new UserDto(username, lastName, email));
+        userService.saveUser(new UserDto(username, lastName, email, password));
         return "redirect:/users";
     }
 
@@ -48,11 +48,12 @@ public class UserController {
     public String updateUser(@RequestParam Long id,
                              @RequestParam String username,
                              @RequestParam String lastName,
-                             @RequestParam String email) {
-        if (username.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
+                             @RequestParam String email,
+                             @RequestParam String password) {
+        if (username.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             return "redirect:/users?error=emptyFields";
         }
-        userService.saveUser(new UserDto(id, username, lastName, email));
+        userService.saveUser(new UserDto(id, username, lastName, email, password));
         return "redirect:/users";
     }
 }
